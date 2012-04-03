@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ public class Gram {
 	}
 	
 	public void setCount() {
-		
+		count = 1;
 	}
 	
 	public static void generateGram( int index ) {
@@ -48,38 +49,48 @@ public class Gram {
 	
 	public static void main(String[] args) throws MongoException, IOException {
 	
+	// Constants 
+	int nConstant = Integer.parseInt(args[0]);	
+	
+	String filename = args[1];
+	
 	// Connection manager 
 	Mongo m = new Mongo( "127.0.0.1" );		
 	DB db = m.getDB( "test" );		
 	DBCollection collection = db.getCollection("myCol");
 	
 	
-	ArrayList<String> list = new ArrayList<String>();
+	ArrayList<String> list = new ArrayList<String>();	
 	list.add("stuff");
 	list.add("more");
 	list.add("here");
 	
 	// Create an object
 		BasicDBObject doc = new BasicDBObject();
-		doc.put("counts", list);
+		BasicDBObject gram = new BasicDBObject();
+		doc.put("filename", "in.txt" );
 		
 		
+		ArrayList<BasicDBObject> grams = new ArrayList<BasicDBObject>();
+		
+		Gram tempGram = new Gram();
+
+		tempGram.setGram("nitish");
+		tempGram.setCount();
+		
+		gram.put( tempGram.getGram(), tempGram.getCount());
+		grams.add(gram);		
+		
+		doc.put("counts", grams);
+		
+	// Insert collection into db
 	collection.insert(doc);
 	
-	DBObject getDoc = collection.findOne();
-	System.out.println(getDoc);
-	
-		
-		
-	
 	// Parse and split a file into arrays of strings
-		TextFile file = new TextFile( "resources/in.txt" );			
-		String line = new String(file.getBuffer() ); 		
-		String[] splits = line.split("[.,?!\n ]+");
+		TextFile f = new TextFile( "resources/in.txt" );			
+		String line = new String(f.getBuffer() ); 		
+		String[] splits = line.split("[.,?!;\n ]+");
 	
-		
-
-		
 		
 
 	}
