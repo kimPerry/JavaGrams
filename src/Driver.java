@@ -81,6 +81,6 @@ public class Driver {
 		    System.out.println( obj );
 		}
 		
-		//collection.drop();
+		collection.drop();
 	}
 }
